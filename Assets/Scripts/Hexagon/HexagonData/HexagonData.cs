@@ -36,8 +36,8 @@ namespace HexagonDemo.Hexagon
             
             base.Initialize(hexagonController);
             SelfGameObject = hexagonController.gameObject;
-            X = hexagonController.x;
-            Y = hexagonController.y;
+            X = hexagonController.X;
+            Y = hexagonController.Y;
             CalculatePosition(X, Y);
             HexagonColor = CheckStartColor(X,Y);
             ChangeColor(hexagonController,this);

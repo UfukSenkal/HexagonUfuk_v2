@@ -8,10 +8,7 @@ namespace HexagonDemo.Hexagon
     public class HexagonController : MonoBehaviour
     {
 
-        //Test
-        public bool test;
-        public bool testMovement = true;
-        public int x, y;
+
      
 
         [SerializeField] MapSettings _mapSettings;
@@ -21,12 +18,14 @@ namespace HexagonDemo.Hexagon
         [SerializeField] HexagonMovementController _hexagonMovementController;
         [SerializeField] HexagonRotationController _hexagonRotationController;
         [SerializeField] private GameObject _outline;
-
+        [SerializeField] private int _x;
+        [SerializeField] private int _y;
 
         private HexagonData _instantiatedHexagonData;
         private NeighbourData _instantiatedneighbourData;
         
-
+        public int X { get; set; }
+        public int Y { get; set; }
         public HexagonData InstantiatedHexagonData { get { return _instantiatedHexagonData; } }
         public NeighbourData InstantiatedNeighbourData { get { return _instantiatedneighbourData; } }
 

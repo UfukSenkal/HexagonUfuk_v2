@@ -31,13 +31,16 @@ namespace HexagonDemo
             GameObject hexagon = Instantiate(_hexagonPrefab, _startPos, Quaternion.identity);
             hexagon.name = "Hexagon " + x + " - " + y;
             var hexagonController = hexagon.GetComponent<HexagonDemo.Hexagon.HexagonController>();
-            hexagonController.x = x;
-            hexagonController.y = y;
+           
+            hexagonController.X = x;
+            hexagonController.Y = y;
             _mapMatris[x, y] = hexagonController;
 
 
             return hexagon;
         }
+
+      
 
         
     }

@@ -10,8 +10,6 @@ namespace HexagonDemo.Map
     public class MapController : MonoBehaviour
     {
 
-        //test
-        public bool test = false;
 
 
         [SerializeField] MapSettings _mapSettings;
@@ -134,8 +132,10 @@ namespace HexagonDemo.Map
                         //mapMatris[i, tempj].GetComponent<Hexagon.HexagonMovement>().ChangePos(pos);
                         mapMatris[i, y] = mapMatris[i, tempj];
                         mapMatris[i, y].name = "Hexagon" + " "  + i + " - " + y;
-                        mapMatris[i, y].x = i;
-                        mapMatris[i, y].y = y;
+                        mapMatris[i, y].InstantiatedHexagonData.X = i;
+                        mapMatris[i, y].InstantiatedHexagonData.Y = y; 
+                        mapMatris[i, y].X = i;
+                        mapMatris[i, y].Y = y;
                         mapMatris[i, tempj] = null;
                         tempj = y;
                         y--;
