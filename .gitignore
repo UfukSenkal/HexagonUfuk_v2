@@ -1,0 +1,8 @@
+Library/
+obj/
+ProjectSettings/
+.vs/
+Assembly-CSharp.csproj
+HexagonUfuk.sln
+HexagonUfuk_v2.sln
+Logs/
