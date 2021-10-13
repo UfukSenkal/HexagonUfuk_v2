@@ -43,7 +43,7 @@ namespace HexagonDemo.Map
         private void CheckMapIsMoving()
         {
 
-            if (Time.fixedTime > 7f)
+            if (ScriptableSpawnManager.Instance.IsInstantiedAll)
             {
                 var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
@@ -74,7 +74,7 @@ namespace HexagonDemo.Map
 
         void CheckMapIsEmpty()
         {
-            if (Time.fixedTime > 7f)
+            if (ScriptableSpawnManager.Instance.IsInstantiedAll)
             {
                 var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 

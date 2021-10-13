@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HexagonData
   m_EditorClassIdentifier: 
   _mapSettings: {fileID: 11400000, guid: 21634e92363df9c459a8441cae4c5dd2, type: 2}
-  _speed: 5
+  _speed: 8

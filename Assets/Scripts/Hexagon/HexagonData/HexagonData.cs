@@ -73,7 +73,7 @@ namespace HexagonDemo.Hexagon
             var _mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
             Color goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
-            if (Time.fixedTime < 3f)
+            if (!ScriptableSpawnManager.Instance.IsInstantiedAll)
             {
                 if (i > 0)
                 {

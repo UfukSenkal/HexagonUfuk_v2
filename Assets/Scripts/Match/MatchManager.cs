@@ -64,7 +64,7 @@ namespace HexagonDemo.Match
         private IEnumerator DestroyNeighbourList(Hexagon.HexagonController[,] mapMatris, List<Hexagon.IHexagon> _neighbourList)
         {
                 _inputData.ClearLastSelection();
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.3f);
             foreach (var item in _neighbourList)
             {
                 //mapMatris[item.X, item.Y] = null;
