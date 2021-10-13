@@ -20,6 +20,7 @@ namespace HexagonDemo.InputData
                 MapState.GameStateInfo = GameState.Rotating;
                 
             }
+         
         }
 
     }

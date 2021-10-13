@@ -17,6 +17,8 @@ namespace HexagonDemo.Map
         private List<int> _instantiatableHexagons = new List<int>();
         private List<GameObject> _instantiatedObjList = new List<GameObject>();
 
+        public GameState currentGameState = MapState.GameStateInfo;
+
         private void Start()
         {
             StartCoroutine(InstantiateInBegining());
@@ -31,26 +33,62 @@ namespace HexagonDemo.Map
 
             if (MapState.GameStateInfo == GameState.Explode)
             {
-                
-                StartCoroutine(MoveHexagonsDown());
+                CheckMapIsEmpty();
+                //StartCoroutine(MoveHexagonsDown());
             }
+            currentGameState = MapState.GameStateInfo;
+
         }
 
         private void CheckMapIsMoving()
         {
-            var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
-            foreach (var item in mapMatris)
+
+            if (Time.fixedTime > 7f)
             {
-                if (item == null)
+                var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
+
+                foreach (var item in mapMatris)
                 {
-                    return;
+                    if (item == null)
+                    {
+
+                        StartCoroutine(MoveHexagonsDown());
+                        return;
+                    }
                 }
-                if (item.InstantiatedHexagonData.IsMoving)
+                foreach (var item in mapMatris)
                 {
-                    return;
+
+                  
+                    if (item.InstantiatedHexagonData.IsMoving)
+                    {
+                        MapState.GameStateInfo = GameState.Moving;
+                        return;
+                    }
+                }
+                MapState.GameStateInfo = GameState.Filled;
+            }
+
+            
+        }
+
+        void CheckMapIsEmpty()
+        {
+            if (Time.fixedTime > 7f)
+            {
+                var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
+
+                foreach (var item in mapMatris)
+                {
+                    if (item == null)
+                    {
+
+                        StartCoroutine(MoveHexagonsDown());
+                        return;
+                    }
                 }
             }
-            MapState.GameStateInfo = GameState.Filled;
+            MapState.GameStateInfo = GameState.Moving;
         }
 
         private IEnumerator InstantiateInBegining()
@@ -88,6 +126,7 @@ namespace HexagonDemo.Map
         public IEnumerator MoveHexagonsDown()
         {
             MapState.GameStateInfo = GameState.Moving;
+
             var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
             for (int i = 0; i < _mapSettings.GridWidth; i++)
             {
@@ -99,7 +138,6 @@ namespace HexagonDemo.Map
                     {
 
                         tempj = _mapSettings.GridHeight - 1;
-                        //StartCoroutine(InstantiateHexagon(i, _mapSettings.GridHeight - 1));
                         ScriptableSpawnManager.Instance.InstantiateHexagon(i, _mapSettings.GridHeight - 1);
                         yield return new WaitForSeconds(.2f);
                         mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.CalculatePosition(i, _mapSettings.GridHeight - 1);
@@ -115,21 +153,9 @@ namespace HexagonDemo.Map
                     {
 
 
-                        //float yPos = y * _mapSettings.GridYOffset;
-                        //float xPos = i * _mapSettings.GridXOffset;
-                        //if (i % 2 == 0)
-                        //{
-                        //    yPos += _mapSettings.GridYOffset / 2;
-
-                        //}
-                        //Vector2 pos = new Vector2(xPos, yPos);
-
                         mapMatris[i, tempj].InstantiatedHexagonData.CalculatePosition(i, y);
 
 
-
-
-                        //mapMatris[i, tempj].GetComponent<Hexagon.HexagonMovement>().ChangePos(pos);
                         mapMatris[i, y] = mapMatris[i, tempj];
                         mapMatris[i, y].name = "Hexagon" + " "  + i + " - " + y;
                         mapMatris[i, y].InstantiatedHexagonData.X = i;
@@ -153,6 +179,7 @@ namespace HexagonDemo.Map
 
 
             }
+            CheckMapIsEmpty();
         }
 
       

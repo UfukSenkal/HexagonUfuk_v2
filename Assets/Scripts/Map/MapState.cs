@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace HexagonDemo
+{
 
-public enum GameState
-{
-    Moving,
-    Filled,
-    Rotating,
-    Explode
-}
-public static class MapState
-{
-    public static GameState GameStateInfo;
+    public enum GameState
+    {
+        Moving,
+        Filled,
+        Rotating,
+        Explode,
+        Rotated
+    }
+    public static class MapState
+    {
+        public static GameState GameStateInfo;
+    }
 }

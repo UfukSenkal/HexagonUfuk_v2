@@ -40,10 +40,10 @@ namespace HexagonDemo.InputData
             
         }
 
-        private void ClearLastSelection()
+        public void ClearLastSelection()
         {
 
-            
+           
             for (int i = 0; i < _lastSelectionList.Count; i++)
             {
                 if (_lastSelectionList[i].Outline != null)
@@ -60,7 +60,7 @@ namespace HexagonDemo.InputData
         {
             //_instantiatedCenterObj.transform.Rotate(0, 0, 120f, Space.Self);
             //Debug.Log(_instantiatedCenterObj.transform.eulerAngles);
-            _lastSelectionList[0].SelfGameObject.GetComponent<HexagonRotationController>().RotateHexagons(_lastSelectionList,_instantiatedCenterObj);
+            _instantiatedCenterObj.GetComponent<HexagonRotationController>().RotateHexagons(_lastSelectionList);
         }
 
         private Vector2 FindCenter()
