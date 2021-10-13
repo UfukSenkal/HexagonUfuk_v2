@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1868487007952760287}
   - component: {fileID: 7335317264300266912}
+  - component: {fileID: 6255123362357948108}
   m_Layer: 0
   m_Name: Knob
   m_TagString: Untagged
@@ -81,3 +82,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6255123362357948108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4493580011766513140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f25757ebcfd6b64c94bfb3381f5aa8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 0.14
+  rotateSpeed: 0.13

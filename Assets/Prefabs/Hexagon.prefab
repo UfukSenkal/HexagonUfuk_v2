@@ -112,7 +112,6 @@ GameObject:
   - component: {fileID: 472419127848835898}
   - component: {fileID: 308779101372869003}
   - component: {fileID: 8203129730764050172}
-  - component: {fileID: 6412448025306087043}
   m_Layer: 0
   m_Name: Hexagon
   m_TagString: Untagged
@@ -214,17 +213,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d8616364c7b054cb6da486e5b2721c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: 0
-  testMovement: 0
-  x: 0
-  y: 0
   _mapSettings: {fileID: 11400000, guid: 21634e92363df9c459a8441cae4c5dd2, type: 2}
   _hexagonData: {fileID: 11400000, guid: 1e10f714caf07754c9a231ada3a80cc1, type: 2}
   _neighbourData: {fileID: 11400000, guid: 6c686c497ca11094b8e2fe9512a6dfa2, type: 2}
   _spriteRenderer: {fileID: 6802653322241220647}
   _hexagonMovementController: {fileID: 8203129730764050172}
-  _hexagonRotationController: {fileID: 6412448025306087043}
   _outline: {fileID: 5583293519891271935}
+  _x: 0
+  _y: 0
 --- !u!114 &8203129730764050172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,20 +233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d803fdbee4c0d4ebfcfc19b5f895a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6412448025306087043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2930812658254692588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f25757ebcfd6b64c94bfb3381f5aa8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 0.2
-  rotateSpeed: 0.2
 --- !u!1 &5583293519891271935
 GameObject:
   m_ObjectHideFlags: 0
