@@ -12,35 +12,54 @@ namespace HexagonDemo.Hexagon
         public float rotateSpeed = .2f;
 
         private Quaternion _targetRotation;
-        private GameObject _centerObj;
         private bool _isRotating;
         
 
         private void Update()
         {
-            if (_isRotating)
-            {
-                _centerObj.transform.rotation = Quaternion.Slerp(_centerObj.transform.rotation, _targetRotation, rotationSpeed);
-                MapState.GameStateInfo = GameState.Rotating;
 
-            }
+           
+
+                if (_isRotating)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, rotationSpeed);
+                    
+                    
+
+                    if (Quaternion.Angle(transform.rotation, _targetRotation) <= 2f)
+                    {
+                        _isRotating = false;
+                       MapState.GameStateInfo = GameState.Filled;
+
+                    }
+                    else
+                    {
+                        MapState.GameStateInfo = GameState.Rotating;
+                    }
+                }
+            
+
            
         }
 
-        public void RotateHexagons(List<IHexagon> selectedGroup, GameObject centerObj)
+        public void RotateHexagons(List<IHexagon> selectedGroup)
         {
-            StartCoroutine(RotateHexagonsClockWise(selectedGroup, centerObj));
+            StartCoroutine(RotateHexagonsClockWise(selectedGroup));
         }
 
-        public IEnumerator RotateHexagonsClockWise(List<IHexagon> selectedGroup,GameObject centerObj)
+        public IEnumerator RotateHexagonsClockWise(List<IHexagon> selectedGroup)
         {
+            
             for (int i = 0; i < 3; i++)
             {
-                _targetRotation = Quaternion.Euler(0, 0, 120 * (i + 1));
-                _centerObj = centerObj;
-                _isRotating = true;
-          
 
+                if (MapState.GameStateInfo == GameState.Explode)
+                {
+                    break;
+                }
+                _targetRotation = Quaternion.Euler(0, 0, 120 * (i + 1));
+                _isRotating = true;
+                yield return new WaitForSeconds(rotateSpeed);
                 if (i == 0)
                 {
 
@@ -58,22 +77,65 @@ namespace HexagonDemo.Hexagon
                     SwapHexagonsInMatris(selectedGroup[0], selectedGroup[1]);
                     SwapHexagonsInMatris(selectedGroup[i], selectedGroup[0]);
                 }
+                
+                
 
 
+                yield return new WaitForSeconds(rotationSpeed);
+                
+            }
+
+            MapState.GameStateInfo = GameState.Moving;
+
+
+        }
+        public IEnumerator RotateHexagonsOppositeClockWise(List<IHexagon> selectedGroup)
+        {
+
+           
+
+
+            for (int i = selectedGroup.Count - 1; i >= 0; i--)
+            {
+
+                if (MapState.GameStateInfo == GameState.Explode)
+                {
+                    break;
+                }
+
+                _targetRotation = Quaternion.Euler(0, 0, 120 * (i + 1));
+                if (i == 0)
+                {
+
+                    SwapHexagonsInMatris(selectedGroup[2], selectedGroup[1]);
+                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[2]);
+                }
+                else if (i == 1)
+                {
+                    SwapHexagonsInMatris(selectedGroup[i - 1], selectedGroup[2]);
+                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[i - 1]);
+                }
+                else
+                {
+
+                    SwapHexagonsInMatris(selectedGroup[i - 1], selectedGroup[i - 2]);
+                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[i - 1]);
+                }
+
+                MapState.GameStateInfo = GameState.Rotating;
+                _isRotating = true;
 
 
                 yield return new WaitForSeconds(rotateSpeed);
+
             }
-            _isRotating = false;
-            MapState.GameStateInfo = GameState.Filled;
 
-
+            MapState.GameStateInfo = GameState.Moving;
 
 
 
 
         }
-
 
         public void SwapHexagonsInMatris(IHexagon hex1, IHexagon hex2)
         {
@@ -88,16 +150,19 @@ namespace HexagonDemo.Hexagon
 
             hex1.X = hex2.X;
             hex1.Y = hex2.Y;
+            hex1.SelfGameObject.GetComponent<HexagonController>().X = hex1.X;
+            hex1.SelfGameObject.GetComponent<HexagonController>().Y = hex1.Y;
             mapMatris[hex2.X, hex2.Y] = hex1.SelfGameObject.GetComponent<HexagonController>();
-            mapMatris[hex2.X, hex2.Y].gameObject.name = "Hexagon" + " "  + hex1.X + " - " + hex1.Y;
+            mapMatris[hex2.X, hex2.Y].gameObject.name = "Hexagon" + " "  + hex1.X + " - " + hex1.Y + "Rotated";
 
             hex2.X = tempX;
             hex2.Y = tempY;
-
+            hex2.SelfGameObject.GetComponent<HexagonController>().X = tempX;
+            hex2.SelfGameObject.GetComponent<HexagonController>().Y = tempY;
 
             mapMatris[tempX, tempY] = hex2.SelfGameObject.GetComponent<HexagonController>();
 
-            mapMatris[tempX, tempY].gameObject.name = "Hexagon" + " " + tempX + " - " + tempY;
+            mapMatris[tempX, tempY].gameObject.name = "Hexagon" + " " + tempX + " - " + tempY + "Rotated";
 
 
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HexagonDemo.Hexagon {
@@ -25,7 +26,7 @@ namespace HexagonDemo.Hexagon {
 
         private List<List<IHexagon>> _selectableHexagonList;
 
-        
+        public List<List<IHexagon>> SelectableHexagonList { get { return _selectableHexagonList; } }
        
 
         public override void Initialize(HexagonController hexagonController)
@@ -44,12 +45,7 @@ namespace HexagonDemo.Hexagon {
             _neighbourDownRightList = new List<IHexagon>();
             _neighbourLeftList = new List<IHexagon>();
 
-            _neighbourRightList.Add(_selfHexagon);
-            _neighbourUpRightList.Add(_selfHexagon);
-            _neighbourUpLeftList.Add(_selfHexagon);
-            _neighbourDownLeftList.Add(_selfHexagon);
-            _neighbourDownRightList.Add(_selfHexagon);
-            _neighbourLeftList.Add(_selfHexagon);
+           
 
             _selectableHexagonList = new List<List<IHexagon>>();
 
@@ -104,8 +100,13 @@ namespace HexagonDemo.Hexagon {
                 _neighbourLeftList.Add(_neighbourHexagonDownLeft);
             }
 
+            _neighbourRightList.Add(_selfHexagon);
+            _neighbourUpRightList.Add(_selfHexagon);
+            _neighbourUpLeftList.Add(_selfHexagon);
+            _neighbourDownLeftList.Add(_selfHexagon);
+            _neighbourDownRightList.Add(_selfHexagon);
+            _neighbourLeftList.Add(_selfHexagon);
 
-          
 
             _selectableHexagonList.Add(_neighbourRightList);
             _selectableHexagonList.Add(_neighbourUpRightList);

@@ -16,7 +16,6 @@ namespace HexagonDemo.Hexagon
         [SerializeField] NeighbourData _neighbourData;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] HexagonMovementController _hexagonMovementController;
-        [SerializeField] HexagonRotationController _hexagonRotationController;
         [SerializeField] private GameObject _outline;
         [SerializeField] private int _x;
         [SerializeField] private int _y;
@@ -24,8 +23,8 @@ namespace HexagonDemo.Hexagon
         private HexagonData _instantiatedHexagonData;
         private NeighbourData _instantiatedneighbourData;
         
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int X { get { return _x; } set { _x = value; } }
+        public int Y { get { return _y; } set { _y = value; } }
         public HexagonData InstantiatedHexagonData { get { return _instantiatedHexagonData; } }
         public NeighbourData InstantiatedNeighbourData { get { return _instantiatedneighbourData; } }
 
@@ -48,9 +47,10 @@ namespace HexagonDemo.Hexagon
             //gamestate bağlı moving
             if (MapState.GameStateInfo == GameState.Moving)
             {
+                InstantiatedHexagonData.CalculatePosition(X,Y);
+               _hexagonMovementController.Move(_instantiatedHexagonData.HexagonPosition, _instantiatedHexagonData.Speed);
                 if (Vector3.Distance(transform.position, _instantiatedHexagonData.HexagonPosition) >= .1f)
                 {
-                    _hexagonMovementController.Move(_instantiatedHexagonData.HexagonPosition, _instantiatedHexagonData.Speed);
                     _instantiatedHexagonData.IsMoving = true;
                 }
                 else
@@ -59,9 +59,9 @@ namespace HexagonDemo.Hexagon
                 }
             }
 
-            if (MapState.GameStateInfo == GameState.Filled || MapState.GameStateInfo == GameState.Rotating)
+            if (MapState.GameStateInfo == GameState.Filled)
             {
-                _instantiatedneighbourData.FindNeighbours();
+                //_instantiatedneighbourData.FindNeighbours();
                 
                
                 

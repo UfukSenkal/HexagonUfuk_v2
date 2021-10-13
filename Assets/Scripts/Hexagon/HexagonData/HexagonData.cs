@@ -42,7 +42,7 @@ namespace HexagonDemo.Hexagon
             HexagonColor = CheckStartColor(X,Y);
             ChangeColor(hexagonController,this);
             HexagonStartPosition = new Vector2(HexagonPosition.x, 10f);
-            
+            HexagonSpriteRenderer = hexagonController.SpriteRenderer;
             
 
         }
@@ -80,7 +80,7 @@ namespace HexagonDemo.Hexagon
 
                     if (i % 2 == 0)
                     {
-                        while (_mapMatris[i - 1, j].GetComponent<Hexagon.HexagonController>().SpriteRenderer.color == goColor)
+                        while (_mapMatris[i - 1, j].SpriteRenderer.color == goColor)
                         {
                             goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
                         }
@@ -90,7 +90,7 @@ namespace HexagonDemo.Hexagon
                         if (j > 0)
                         {
 
-                            while (_mapMatris[i - 1, j - 1].GetComponent<Hexagon.HexagonController>().SpriteRenderer.color == goColor)
+                            while (_mapMatris[i - 1, j - 1].SpriteRenderer.color == goColor)
                             {
                                 goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
                             }
