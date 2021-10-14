@@ -11,7 +11,7 @@ namespace HexagonDemo.Hexagon
     {
         [SerializeField] private MapSettings _mapSettings;
         [SerializeField] private float _speed;
-
+        private bool isStarted = false;
         public float Speed { get { return _speed; } }
         public MapSettings MapSettings { get { return _mapSettings; } }
        
@@ -79,11 +79,11 @@ namespace HexagonDemo.Hexagon
             var _mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
             Color goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.ColorCount)];
-            if (!ScriptableSpawnManager.Instance.IsInstantiedAll)
+
+            if (!ScriptableSpawnManager.Instance.IsInstantiedAll || (!isStarted && IsLast(i,j) ))
             {
                 if (i > 0)
                 {
-
                     if (i % 2 == 0)
                     {
                         while (_mapMatris[i - 1, j].SpriteRenderer.color == goColor)
@@ -108,6 +108,16 @@ namespace HexagonDemo.Hexagon
 
 
             
+        }
+
+        public bool IsLast(int x, int y)
+        {
+            if ((x == _mapSettings.GridWidth - 1) && (y == _mapSettings.GridHeight - 1))
+            {
+                isStarted = true;
+                return true;
+            }
+            return false;
         }
 
  
