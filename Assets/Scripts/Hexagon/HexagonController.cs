@@ -49,7 +49,7 @@ namespace HexagonDemo.Hexagon
             {
                 InstantiatedHexagonData.CalculatePosition(X,Y);
                _hexagonMovementController.Move(_instantiatedHexagonData.HexagonPosition, _instantiatedHexagonData.Speed);
-                if (Vector3.Distance(transform.position, _instantiatedHexagonData.HexagonPosition) >= .1f)
+                if (Vector3.Distance(transform.position, _instantiatedHexagonData.HexagonPosition) >= .01f)
                 {
                     _instantiatedHexagonData.IsMoving = true;
                 }

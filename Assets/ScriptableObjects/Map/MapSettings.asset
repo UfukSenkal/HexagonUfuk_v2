@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de089af2822e87c46abea2d6e89b5931, type: 3}
   m_Name: MapSettings
   m_EditorClassIdentifier: 
-  _gridWidth: 8
-  _gridHeight: 9
+  _gridWidth: 6
+  _gridHeight: 7
   _bombTime: 7
   _colorCount: 5
   _colors:

@@ -88,7 +88,7 @@ namespace HexagonDemo.Map
                     }
                 }
             }
-            MapState.GameStateInfo = GameState.Moving;
+            CheckMapIsMoving();
         }
 
         private IEnumerator InstantiateInBegining()

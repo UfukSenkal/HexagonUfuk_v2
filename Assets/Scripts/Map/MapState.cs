@@ -11,7 +11,8 @@ namespace HexagonDemo
         Filled,
         Rotating,
         Explode,
-        Rotated
+        Rotated,
+        Match
     }
     public static class MapState
     {
