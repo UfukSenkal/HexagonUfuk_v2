@@ -1,6 +1,7 @@
 ﻿using HexagonDemo.Map;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace HexagonDemo.Hexagon
@@ -30,6 +31,11 @@ namespace HexagonDemo.Hexagon
 
         public GameObject SelfGameObject { get; set; }
         public bool IsMoving { get; set; }
+        public bool IsBomb { get; set; }
+
+        public TextMeshProUGUI BombText { get; set; }
+
+        public int BombTime { get; set; }
 
         public override void Initialize(HexagonController hexagonController)
         {
@@ -103,6 +109,8 @@ namespace HexagonDemo.Hexagon
 
             
         }
+
+ 
 
     }
 }

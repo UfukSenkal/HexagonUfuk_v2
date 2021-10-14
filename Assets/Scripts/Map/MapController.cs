@@ -1,4 +1,6 @@
 ﻿using HexagonDemo.Hexagon;
+using HexagonDemo.Match;
+using HexagonDemo.Score;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,15 +11,21 @@ namespace HexagonDemo.Map
 
     public class MapController : MonoBehaviour
     {
-
-
+      
 
         [SerializeField] MapSettings _mapSettings;
+        [SerializeField] ScoreController _scoreController;
+        [SerializeField] MatchManager _matchManager;
+        [SerializeField] GameObject _gameOverPanel;
         
         private List<int> _instantiatableHexagons = new List<int>();
         private List<GameObject> _instantiatedObjList = new List<GameObject>();
 
         public GameState currentGameState = MapState.GameStateInfo;
+       private IHexagon _bombHexagon;
+        private int _bombScore;
+
+        public IHexagon BombHexagon { get { return _bombHexagon; } }
 
         private void Start()
         {
@@ -26,21 +34,28 @@ namespace HexagonDemo.Map
 
         private void Update()
         {
+            currentGameState = MapState.GameStateInfo;
             if (MapState.GameStateInfo == GameState.Moving)
             {
                 CheckMapIsMoving();
             }
 
-            if (MapState.GameStateInfo == GameState.Explode)
+            if (MapState.GameStateInfo == GameState.Explode || MapState.GameStateInfo == GameState.Match)
             {
                 CheckMapIsEmpty();
-                //StartCoroutine(MoveHexagonsDown());
-            }
-            currentGameState = MapState.GameStateInfo;
 
+            }
+            if (_gameOverPanel.activeSelf)
+            {
+                MapState.GameStateInfo = GameState.GameOver;
+
+            }
+            
+            
+           
         }
 
-        private void CheckMapIsMoving()
+        private bool CheckMapIsMoving()
         {
 
             if (ScriptableSpawnManager.Instance.IsInstantiedAll)
@@ -53,7 +68,7 @@ namespace HexagonDemo.Map
                     {
 
                         StartCoroutine(MoveHexagonsDown());
-                        return;
+                        return false;
                     }
                 }
                 foreach (var item in mapMatris)
@@ -63,16 +78,18 @@ namespace HexagonDemo.Map
                     if (item.InstantiatedHexagonData.IsMoving)
                     {
                         MapState.GameStateInfo = GameState.Moving;
-                        return;
+                        return true;
                     }
                 }
                 MapState.GameStateInfo = GameState.Filled;
+                MatchManager.Instance.FindNewNeighbours();
+                
             }
 
-            
+            return false;
         }
 
-        void CheckMapIsEmpty()
+        public bool CheckMapIsEmpty()
         {
             if (ScriptableSpawnManager.Instance.IsInstantiedAll)
             {
@@ -84,11 +101,13 @@ namespace HexagonDemo.Map
                     {
 
                         StartCoroutine(MoveHexagonsDown());
-                        return;
+                        return true;
                     }
                 }
             }
-            CheckMapIsMoving();
+            
+            //CheckMapIsMoving();
+            return false;
         }
 
         private IEnumerator InstantiateInBegining()
@@ -139,7 +158,17 @@ namespace HexagonDemo.Map
 
                         tempj = _mapSettings.GridHeight - 1;
                         ScriptableSpawnManager.Instance.InstantiateHexagon(i, _mapSettings.GridHeight - 1);
+
+                        
                         yield return new WaitForSeconds(.2f);
+                        if (_scoreController.Score >= 10 && !CheckBombHexagon())
+                        {
+                            _bombScore += _mapSettings.BombScore;
+                            mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.BombText.text = _mapSettings.BombTime.ToString();
+                            mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.BombText.gameObject.SetActive(true);
+                            mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.IsBomb = true;
+                            
+                        }
                         mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.CalculatePosition(i, _mapSettings.GridHeight - 1);
 
                     }
@@ -179,9 +208,131 @@ namespace HexagonDemo.Map
 
 
             }
-            CheckMapIsEmpty();
+            if (CheckMapIsEmpty())
+            {
+                MoveHexagonsDown();
+
+                
+            }
+            while (CheckMapIsMoving())
+            {
+                yield return null;
+            }
+
+            MatchManager.Instance.CheckMatchForMap(false);
         }
 
-      
+      public bool CheckBombHexagon()
+        {
+            var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
+            foreach (var item in mapMatris)
+            {
+                if (item.InstantiatedHexagonData != null)
+                {
+
+                    if (item.InstantiatedHexagonData.IsBomb)
+                    {
+                        _bombHexagon = item.InstantiatedHexagonData;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        #region GameOverLogic
+
+        public void End()
+        {
+            _gameOverPanel.SetActive(true);
+        }
+
+        public bool CheckGameOver()
+        {
+            var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
+
+            foreach (var hexagon in mapMatris)
+            {
+                hexagon.InstantiatedNeighbourData.FindNeighbours();
+                foreach (var _neighbourList in hexagon.InstantiatedNeighbourData.SelectableHexagonList)
+                {
+                    if (_neighbourList.Count == 3)
+                    {
+
+                        if (_neighbourList[0].HexagonColor == _neighbourList[1].HexagonColor
+                            || _neighbourList[1].HexagonColor == _neighbourList[2].HexagonColor
+                            || _neighbourList[0].HexagonColor == _neighbourList[2].HexagonColor)
+                        {
+
+                            bool canMatch = CheckNeighbourForMatch(_neighbourList);
+                            if (canMatch)
+                            {
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public bool CheckNeighbourForMatch(List<IHexagon> _neighbourList)
+        {
+            IHexagon differentObj = _neighbourList[0];
+            if (_neighbourList[0].HexagonColor == _neighbourList[1].HexagonColor)
+                differentObj = _neighbourList[2];
+            else if (_neighbourList[0].HexagonColor == _neighbourList[2].HexagonColor)
+                differentObj = _neighbourList[1];
+            else if (_neighbourList[1].HexagonColor == _neighbourList[2].HexagonColor)
+                differentObj = _neighbourList[0];
+
+
+
+
+
+            Color sameColor = _neighbourList.Find(x => x.HexagonColor != differentObj.HexagonColor).HexagonColor;
+
+
+            List<IHexagon> sameObjects = new List<IHexagon>(_neighbourList);
+            sameObjects.Remove(differentObj);
+
+
+
+            List<List<IHexagon>> neighbourLists = new List<List<IHexagon>>(differentObj.SelfGameObject.GetComponent<HexagonController>().InstantiatedNeighbourData.SelectableHexagonList);
+            foreach (var neighbourList in neighbourLists)
+            {
+
+
+                if (neighbourList.Count == 3 && !ListContains(neighbourList, sameObjects))
+                {
+
+                    if (neighbourList[0].HexagonColor == sameColor
+                        || neighbourList[1].HexagonColor == sameColor
+                        || neighbourList[2].HexagonColor == sameColor)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+
+
+        }
+
+        private bool ListContains(List<IHexagon> _list, List<IHexagon> _gameObjList)
+        {
+            foreach (var item in _list)
+            {
+                if (_gameObjList.Contains(item))
+                    return true;
+
+            }
+            return false;
+        }
+
+        #endregion
     }
+
+
 }

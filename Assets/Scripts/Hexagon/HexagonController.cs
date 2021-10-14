@@ -1,6 +1,7 @@
 ﻿using HexagonDemo.Map;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace HexagonDemo.Hexagon
@@ -15,6 +16,7 @@ namespace HexagonDemo.Hexagon
         [SerializeField] HexagonData _hexagonData;
         [SerializeField] NeighbourData _neighbourData;
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private TextMeshProUGUI _bombText;
         [SerializeField] HexagonMovementController _hexagonMovementController;
         [SerializeField] private GameObject _outline;
         [SerializeField] private int _x;
@@ -36,6 +38,8 @@ namespace HexagonDemo.Hexagon
             _instantiatedHexagonData.Initialize(this);
             _instantiatedHexagonData.Outline = _outline;
             _instantiatedHexagonData.SelfGameObject = this.gameObject;
+            _instantiatedHexagonData.BombText = _bombText;
+            _instantiatedHexagonData.BombTime = _mapSettings.BombTime;
 
              _instantiatedneighbourData =  Instantiate(_neighbourData);
             _instantiatedneighbourData.Initialize(this);
@@ -59,13 +63,6 @@ namespace HexagonDemo.Hexagon
                 }
             }
 
-            if (MapState.GameStateInfo == GameState.Filled)
-            {
-                //_instantiatedneighbourData.FindNeighbours();
-                
-               
-                
-            }
             
         }
 
