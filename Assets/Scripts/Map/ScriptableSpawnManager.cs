@@ -37,7 +37,6 @@ namespace HexagonDemo
             _mapMatris[x, y] = hexagonController;
             if (!IsInstantiedAll)
             {
-
                 IsInstantiedAll = (x == _mapSettings.GridWidth - 1 ? true : false) && (y == _mapSettings.GridHeight - 1 ? true : false);
             }
 
@@ -45,7 +44,6 @@ namespace HexagonDemo
             return hexagon;
         }
 
-      
 
         
     }

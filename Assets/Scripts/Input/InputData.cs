@@ -114,8 +114,7 @@ namespace HexagonDemo.InputData
         }
         public void RotateHexagons()
         {
-            //_instantiatedCenterObj.transform.Rotate(0, 0, 120f, Space.Self);
-            //Debug.Log(_instantiatedCenterObj.transform.eulerAngles);
+
             _instantiatedCenterObj.GetComponent<HexagonRotationController>().RotateHexagons(_lastSelectionList);
             
         }

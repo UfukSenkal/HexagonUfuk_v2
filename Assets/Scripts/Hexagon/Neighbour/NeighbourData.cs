@@ -9,6 +9,8 @@ namespace HexagonDemo.Hexagon {
     [CreateAssetMenu(menuName = "HexagonDemo/Hexagon/Neighbour Data")]
     public class NeighbourData : AbstractBaseHexagonData
     {
+        [SerializeField] private int _minHexagonExplodeCount = 3;
+
         private IHexagon _selfHexagon;
         private IHexagon _neighbourHexagonUp;
         private IHexagon _neighbourHexagonUpRight;
@@ -190,28 +192,32 @@ namespace HexagonDemo.Hexagon {
 
         public void FindMatchNeighbourList()
         {
+            #region test
+            //for testing multiple explosions
+            //
+            //_selectableHexagonList = _selectableHexagonList.OrderByDescending(p => p.Count).ToList();
+
+            //var matchList = new List<IHexagon>();
+
+            //for (int i = 0; i < _matchableList.Count - 1; i++)
+            //{
+            //    if (_matchableList[i].HexagonColor == _selfHexagon.HexagonColor)
+            //    {
+            //        matchList.Add(_matchableList[i]);
+            //        if (_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1].HexagonColor == _selfHexagon.HexagonColor)
+            //        {
+            //            matchList.Add(_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1]);
+            //        }
+            //        else
+            //        {
+            //            matchList.Remove(_matchableList[i]);
+            //        }
+            //    }
+            //}
+            #endregion
+
 
             List<IHexagon> matchListTemp = new List<IHexagon>();
-            _selectableHexagonList = _selectableHexagonList.OrderByDescending(p => p.Count).ToList();
-
-            var matchList = new List<IHexagon>();
-
-            for (int i = 0; i < _matchableList.Count - 1; i++)
-            {
-                if (_matchableList[i].HexagonColor == _selfHexagon.HexagonColor)
-                {
-                    matchList.Add(_matchableList[i]);
-                    if (_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1].HexagonColor == _selfHexagon.HexagonColor)
-                    {
-                        matchList.Add(_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1]);
-                    }
-                    else
-                    {
-                        matchList.Remove(_matchableList[i]);
-                    }
-                }
-            }
-
             foreach (var _neighbourList in _selectableHexagonList)
             {
                 if (_neighbourList.Count >= 3)
@@ -243,7 +249,7 @@ namespace HexagonDemo.Hexagon {
 
             foreach (var list in _selectableHexagonList)
             {
-                if (list != null && list.Count >= 3)
+                if (list != null && list.Count >= _minHexagonExplodeCount)
                 {
 
                     foreach (var neighbour in list)

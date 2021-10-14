@@ -15,7 +15,6 @@ namespace HexagonDemo.Map
 
         [SerializeField] MapSettings _mapSettings;
         [SerializeField] ScoreController _scoreController;
-        [SerializeField] MatchManager _matchManager;
         [SerializeField] GameObject _gameOverPanel;
         
         private List<int> _instantiatableHexagons = new List<int>();

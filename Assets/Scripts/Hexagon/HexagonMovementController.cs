@@ -11,10 +11,5 @@ namespace HexagonDemo.Hexagon
             transform.position = Vector3.Lerp(transform.position, lerpPos, Time.deltaTime * speed);
         }
         
-        public void MoveAroundCircle(Vector2 startPos, Vector2 nextPos, Vector3 center)
-        {
-            transform.position = Vector3.Slerp(startPos, nextPos, Time.deltaTime * 2f);
-            transform.position += center;
-        }
     }
 }

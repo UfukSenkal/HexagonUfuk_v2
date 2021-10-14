@@ -14,7 +14,6 @@ namespace HexagonDemo.Hexagon
         public float rotateSpeed = .2f;
 
         private Quaternion _targetRotation;
-        private bool _isRotating;
 
         private List<IHexagon> _selectedGroup;
 
@@ -42,7 +41,6 @@ namespace HexagonDemo.Hexagon
                     break;
                 }
                 _targetRotation = Quaternion.Euler(0, 0, -120 * angleMultiplier);
-                _isRotating = true;
                 MapState.GameStateInfo = GameState.Rotating;
                 yield return new WaitForSeconds(rotateSpeed);
 
