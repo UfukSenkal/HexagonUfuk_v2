@@ -18,35 +18,7 @@ namespace HexagonDemo.Hexagon
 
         private List<IHexagon> _selectedGroup;
 
-        private void Update()
-        {
 
-           
-
-                if (_isRotating)
-                {
-                   
-                    
-                    
-
-                    if (Quaternion.Angle(transform.rotation, _targetRotation) <= 2f)
-                    {
-                        _isRotating = false;
-
-
-
-                   
-                    }
-                    else
-                    {
-                        MatchManager.Instance.FindNewNeighbours();
-                        MapState.GameStateInfo = GameState.Rotating;
-                    }
-                }
-            
-
-           
-        }
 
         public void RotateHexagons(List<IHexagon> selectedGroup)
         {
