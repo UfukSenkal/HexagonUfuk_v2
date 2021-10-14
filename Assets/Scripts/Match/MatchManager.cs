@@ -10,6 +10,7 @@ namespace HexagonDemo.Match
     public class MatchManager : MonoBehaviour
     {
         [SerializeField] InputData.InputData _inputData;
+        [SerializeField] ParticleSystem _explosionEffect;
         private void Update()
         {
             if (MapState.GameStateInfo == GameState.Rotating)
@@ -65,16 +66,30 @@ namespace HexagonDemo.Match
             
         }
 
-        private IEnumerator DestroyNeighbourList(List<Hexagon.IHexagon> _neighbourList)
+        private IEnumerator DestroyNeighbourList(List<IHexagon> _neighbourList)
         {
-                _inputData.ClearLastSelection();
-            yield return new WaitForSeconds(.3f);
-           
+            ExplosionEffect(_neighbourList);
+            _inputData.ClearLastSelection();
+            yield return new WaitForSeconds(.2f);
             foreach (var item in _neighbourList)
             {
-                //mapMatris[item.X, item.Y] = null;
+
                 Destroy(item.SelfGameObject);
             }
+        }
+
+        private void ExplosionEffect(List<IHexagon> _neighbourList)
+        {
+            _explosionEffect.Stop();
+
+            var pos = FindCenter(_neighbourList);
+
+
+            _explosionEffect.transform.position = pos;
+            var partycleMain = _explosionEffect.main;
+            partycleMain.startColor = _neighbourList[0].HexagonColor;
+
+            _explosionEffect.Play();
         }
 
         void FindNewNeighbours()
@@ -87,6 +102,19 @@ namespace HexagonDemo.Match
 
                 hexagon.InstantiatedNeighbourData.FindNeighbours();
             }
+        }
+
+        Vector3 FindCenter(List<IHexagon> list)
+        {
+            Vector3 center = Vector2.zero;
+
+            foreach (var neighbour in list)
+            {
+                center += neighbour.SelfGameObject.transform.position;
+            }
+            center /= 3;
+            
+            return center;
         }
 
 
