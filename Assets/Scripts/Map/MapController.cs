@@ -41,7 +41,7 @@ namespace HexagonDemo.Map
                 CheckMapIsMoving();
             }
 
-            if (MapState.GameStateInfo == GameState.Explode || MapState.GameStateInfo == GameState.Match)
+            if (MapState.GameStateInfo == GameState.Explode)
             {
                 CheckMapIsEmpty();
 
@@ -65,7 +65,7 @@ namespace HexagonDemo.Map
 
                 foreach (var item in mapMatris)
                 {
-                    if (item == null)
+                    if (item == null || item.InstantiatedHexagonData == null)
                     {
 
                         StartCoroutine(MoveHexagonsDown());
@@ -161,7 +161,7 @@ namespace HexagonDemo.Map
                         ScriptableSpawnManager.Instance.InstantiateHexagon(i, _mapSettings.GridHeight - 1);
                         
                         
-                        yield return new WaitForSeconds(.2f);
+                        yield return new WaitForSeconds(.5f);
                         if (_scoreController.Score >= _bombScore && !CheckBombHexagon())
                         {
 
@@ -185,22 +185,29 @@ namespace HexagonDemo.Map
                     while (mapMatris[i, y] == null)
                     {
 
-
-                        mapMatris[i, tempj].InstantiatedHexagonData.CalculatePosition(i, y);
-
-
-                        mapMatris[i, y] = mapMatris[i, tempj];
-                        mapMatris[i, y].name = "Hexagon" + " "  + i + " - " + y;
-                        mapMatris[i, y].InstantiatedHexagonData.X = i;
-                        mapMatris[i, y].InstantiatedHexagonData.Y = y; 
-                        mapMatris[i, y].X = i;
-                        mapMatris[i, y].Y = y;
-                        mapMatris[i, tempj] = null;
-                        tempj = y;
-                        y--;
-                        if (y < 0)
+                        try
                         {
 
+                            mapMatris[i, tempj].InstantiatedHexagonData.CalculatePosition(i, y);
+
+
+                            mapMatris[i, y] = mapMatris[i, tempj];
+                            mapMatris[i, y].name = "Hexagon" + " "  + i + " - " + y;
+                            mapMatris[i, y].InstantiatedHexagonData.X = i;
+                            mapMatris[i, y].InstantiatedHexagonData.Y = y; 
+                            mapMatris[i, y].X = i;
+                            mapMatris[i, y].Y = y;
+                            mapMatris[i, tempj] = null;
+                            tempj = y;
+                            y--;
+                            if (y < 0)
+                            {
+
+                                break;
+                            }
+                        }
+                        catch (Exception)
+                        {
                             break;
                         }
                     }

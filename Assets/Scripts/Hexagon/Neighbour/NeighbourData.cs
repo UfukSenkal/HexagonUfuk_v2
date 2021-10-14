@@ -55,49 +55,57 @@ namespace HexagonDemo.Hexagon {
             int x = _selfHexagon.X;
             int y = _selfHexagon.Y;
 
-
-            if (y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1))
+            try
             {
-                _neighbourHexagonUp = mapMatris[x, y + 1].InstantiatedHexagonData;
-            }
 
-            if (x != (_hexagonController.InstantiatedHexagonData.MapSettings.GridWidth - 1) && (isUpperHeight ?  y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1) : true))
-            {
-               
+
+                if (y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1))
+                {
+                    _neighbourHexagonUp = mapMatris[x, y + 1].InstantiatedHexagonData;
+                }
+
+                if (x != (_hexagonController.InstantiatedHexagonData.MapSettings.GridWidth - 1) && (isUpperHeight ? y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1) : true))
+                {
+
+
                     _neighbourHexagonUpRight = mapMatris[x + 1, isUpperHeight ? y + 1 : y].InstantiatedHexagonData;
-                
 
+                }
+
+                if (x != 0 && (isUpperHeight ? y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1) : true))
+                {
+
+                    _neighbourHexagonUpLeft = mapMatris[x - 1, isUpperHeight ? y + 1 : y].InstantiatedHexagonData;
+
+                }
+
+                if (y != 0)
+                {
+                    _neighbourHexagonDown = mapMatris[x, y - 1].InstantiatedHexagonData;
+
+                }
+
+                if (x != (_hexagonController.InstantiatedHexagonData.MapSettings.GridWidth - 1) && (isUpperHeight ? true : y != 0))
+                {
+                    _neighbourHexagonDownRight = mapMatris[x + 1, isUpperHeight ? y : y - 1].InstantiatedHexagonData;
+
+                }
+
+                if (x != 0 && (isUpperHeight ? true : y != 0))
+                {
+                    _neighbourHexagonDownLeft = mapMatris[x - 1, isUpperHeight ? y : y - 1].InstantiatedHexagonData;
+
+                }
+
+
+                FindSelectableNeighbours();
+
+                FindMatchNeighbourList();
             }
-
-            if (x != 0 && (isUpperHeight ? y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1) : true))
+            catch (System.Exception)
             {
-                _neighbourHexagonUpLeft = mapMatris[x - 1, isUpperHeight ? y + 1 : y].InstantiatedHexagonData;
-       
-            }
-
-            if (y != 0)
-            {
-                _neighbourHexagonDown = mapMatris[x, y - 1].InstantiatedHexagonData;
 
             }
-
-            if (x != (_hexagonController.InstantiatedHexagonData.MapSettings.GridWidth - 1) && (isUpperHeight ? true : y != 0))
-            {
-                _neighbourHexagonDownRight = mapMatris[x + 1, isUpperHeight ? y : y - 1].InstantiatedHexagonData;
-
-            }
-
-            if (x != 0 && (isUpperHeight ? true : y != 0))
-            {
-                _neighbourHexagonDownLeft = mapMatris[x - 1, isUpperHeight ? y : y - 1].InstantiatedHexagonData;
-
-            }
-
-
-            FindSelectableNeighbours();
-
-            FindMatchNeighbourList();
-
         }
 
 

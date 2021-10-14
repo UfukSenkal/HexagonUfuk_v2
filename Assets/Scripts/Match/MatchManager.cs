@@ -24,19 +24,7 @@ namespace HexagonDemo.Match
         {
             Instance = this;
         }
-        private void Update()
-        {
-            //if (MapState.GameStateInfo == GameState.Rotating)
-            //{
-            //    FindNewNeighbours();
-            //}
 
-            //if (MapState.GameStateInfo == GameState.Filled)
-            //{
-            //    FindNewNeighbours();
-            //    CheckMatchForMap();
-            //}
-        }
 
         public void CheckMatchForMap(bool onMove)
         {
@@ -45,7 +33,7 @@ namespace HexagonDemo.Match
 
             foreach (var hexagon in mapMatris)
             {
-                if (hexagon.InstantiatedNeighbourData != null)
+                if (hexagon != null && hexagon.InstantiatedNeighbourData != null)
                 {
 
                     hexagon.InstantiatedNeighbourData.FindNeighbours();
@@ -63,21 +51,14 @@ namespace HexagonDemo.Match
         private void CheckMatch(HexagonController hexagon)
         {
             
-                if (hexagon.InstantiatedNeighbourData.MatchList.Count >= 3)
+                if (hexagon.InstantiatedNeighbourData.MatchList != null && hexagon.InstantiatedNeighbourData.MatchList.Count >= 3)
                 {
 
 
                 MapState.GameStateInfo = GameState.Explode;
                 StartCoroutine(DestroyNeighbourList(hexagon.InstantiatedNeighbourData.MatchList));
-                
-               
-                //int score = (_neighbourList.Count * scoreController.ScoreMult);
 
-                //scoreController.Score += score;
-                //scoreController.ScoreTextUpdate();
-
-
-            }
+                }
             
         }
 
