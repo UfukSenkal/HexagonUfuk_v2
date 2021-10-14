@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HexagonDemo.Match;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace HexagonDemo.Hexagon
 
                 if (_isRotating)
                 {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, rotateSpeed);
+                   
                     
                     
 
@@ -32,11 +33,13 @@ namespace HexagonDemo.Hexagon
                     {
                         _isRotating = false;
 
-                        MapState.GameStateInfo = GameState.Filled;
 
+
+                   
                     }
                     else
                     {
+                        MatchManager.Instance.FindNewNeighbours();
                         MapState.GameStateInfo = GameState.Rotating;
                     }
                 }
@@ -49,55 +52,11 @@ namespace HexagonDemo.Hexagon
         {
             _selectedGroup = new List<IHexagon>(selectedGroup);
             
-            StartCoroutine(RotateHexagonsOppositeClockWise(selectedGroup));
+            StartCoroutine(RotateHexagonsClockWise(selectedGroup));
 
         }
 
         public IEnumerator RotateHexagonsClockWise(List<IHexagon> selectedGroup)
-        {
-            selectedGroup.OrderBy(p => p.X);
-            for (int i = 0; i < 3; i++)
-            {
-               
-                if (MapState.GameStateInfo == GameState.Match)
-                {
-                    break;
-                }
-                _targetRotation = Quaternion.Euler(0, 0, 120 * (i + 1));
-                _isRotating = true;
-                yield return new WaitForSeconds(rotateSpeed * Time.deltaTime);
-
-
-                if (i == 0)
-                {
-
-                    SwapHexagonsInMatris(selectedGroup[i + 1], selectedGroup[i + 2]);
-                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[i + 1]);
-                }
-                else if (i == 1)
-                {
-                    SwapHexagonsInMatris(selectedGroup[i + 1], selectedGroup[0]);
-                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[i + 1]);
-                }
-                else
-                {
-
-                    SwapHexagonsInMatris(selectedGroup[0], selectedGroup[1]);
-                    SwapHexagonsInMatris(selectedGroup[i], selectedGroup[0]);
-                }
-                
-                
-
-
-                yield return new WaitForSeconds(rotationSpeed);
-                
-            }
-
-            
-
-
-        }
-        public IEnumerator RotateHexagonsOppositeClockWise(List<IHexagon> selectedGroup)
         {
 
 
@@ -116,13 +75,22 @@ namespace HexagonDemo.Hexagon
                 yield return new WaitForSeconds(rotateSpeed);
 
 
-
-               
-
-               
+                while (Quaternion.Angle(transform.rotation, _targetRotation) >= 2f)
+                {
+                     transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, rotateSpeed);
+                    yield return null;
+                    
+                   
+                }
 
                 SwapHexagonsInMatris(_selectedGroup[0], _selectedGroup[1]);
                 SwapHexagonsInMatris(_selectedGroup[0], _selectedGroup[2]);
+
+                MapState.GameStateInfo = GameState.Filled;
+                MatchManager.Instance.FindNewNeighbours();
+                MatchManager.Instance.CheckMatchForMap(true);
+
+
 
                 yield return new WaitForSeconds(rotationSpeed);
             }

@@ -38,17 +38,17 @@ namespace HexagonDemo.Map
         public int ColorCount { get => _colorCount; set => _colorCount = value; }
         public Color[] Colors { get => _colors; set => _colors = value; }
         public int BombTime { get => _bombTime; set => _bombTime = value; }
-        public int ColorCountMax { get => _colorCountMax; set => _colorCountMax = value; }
-        public int ColorCountMin { get => _colorCountMin; set => _colorCountMin = value; }
-        public int GridWidthMax { get => _gridWidthMax; set => _gridWidthMax = value; }
-        public int GridWidthMin { get => _gridWidthMin; set => _gridWidthMin = value; }
-        public int GridHeightMax { get => _gridHeightMax; set => _gridHeightMax = value; }
-        public int GridHeightMin { get => _gridHeightMin; set => _gridHeightMin = value; }
-        public int BombTimeMax { get => _bombTimeMax; set => _bombTimeMax = value; }
+        public int ColorCountMax { get => _colorCountMax; }
+        public int ColorCountMin { get => _colorCountMin; }
+        public int GridWidthMax { get => _gridWidthMax;  }
+        public int GridWidthMin { get => _gridWidthMin; }
+        public int GridHeightMax { get => _gridHeightMax;  }
+        public int GridHeightMin { get => _gridHeightMin;  }
+        public int BombTimeMax { get => _bombTimeMax;  }
         public int BombTimeMin { get => _bombTimeMin; set => _bombTimeMin = value; }
         public float GridYOffset { get => _gridYOffset; }
         public float GridXOffset { get => _gridXOffset; }
-        public int BombScore { get => _bombScore; set => _bombScore = value; }
+        public int BombScore { get => _bombScore; }
         public float Speed { get => _speed; }
     }
 }

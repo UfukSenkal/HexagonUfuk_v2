@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HexagonDemo.Match;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -181,6 +182,26 @@ namespace HexagonDemo.Hexagon {
         {
 
             List<IHexagon> matchListTemp = new List<IHexagon>();
+            _selectableHexagonList = _selectableHexagonList.OrderByDescending(p => p.Count).ToList();
+
+            var matchList = new List<IHexagon>();
+
+            for (int i = 0; i < _matchableList.Count - 1; i++)
+            {
+                if (_matchableList[i].HexagonColor == _selfHexagon.HexagonColor)
+                {
+                    matchList.Add(_matchableList[i]);
+                    if (_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1].HexagonColor == _selfHexagon.HexagonColor)
+                    {
+                        matchList.Add(_matchableList[((i + 1) == _matchableList.Count) ? i - 1 : i + 1]);
+                    }
+                    else
+                    {
+                        matchList.Remove(_matchableList[i]);
+                    }
+                }
+            }
+
             foreach (var _neighbourList in _selectableHexagonList)
             {
                 if (_neighbourList.Count >= 3)
@@ -190,15 +211,8 @@ namespace HexagonDemo.Hexagon {
                     {
                          matchListTemp = _neighbourList;
                         MapState.GameStateInfo = GameState.Match;
-                        //if (bombHexagon != null)
-                        //{
-                        //    bombTime--;
-                        //    bombHexagon.GetComponent<Hexagon.HexagonController>().SetBombText(bombTime.ToString());
-                        //}
-                        //int score = (_neighbourList.Count * scoreController.ScoreMult);
+                        
 
-                        //scoreController.Score += score;
-                        //scoreController.ScoreTextUpdate();
                         break;
                     }
                 }
@@ -206,14 +220,7 @@ namespace HexagonDemo.Hexagon {
 
 
             _matchList = matchListTemp;
-            //foreach (var item in _matchableList)
-            //{
-            //    if (item.HexagonColor == _selfHexagon.HexagonColor)
-            //    {
-            //        matchdenemelist.Add(item);
-            //        Debug.Log(item.SelfGameObject.name);
-            //    }
-            //}
+  
 
           
         }

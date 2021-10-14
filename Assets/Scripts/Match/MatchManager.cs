@@ -1,7 +1,10 @@
 ﻿using HexagonDemo.Hexagon;
+using HexagonDemo.Map;
+using HexagonDemo.Score;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HexagonDemo.Match
@@ -9,35 +12,50 @@ namespace HexagonDemo.Match
 
     public class MatchManager : MonoBehaviour
     {
+        public static MatchManager Instance;
+        private bool _onMove = false;
+
         [SerializeField] InputData.InputData _inputData;
         [SerializeField] ParticleSystem _explosionEffect;
+        [SerializeField] ScoreController _scoreController;
+        [SerializeField] MapController _mapController;
+      
+        private void Awake()
+        {
+            Instance = this;
+        }
         private void Update()
         {
-            if (MapState.GameStateInfo == GameState.Rotating)
-            {
-                FindNewNeighbours();
-            }
+            //if (MapState.GameStateInfo == GameState.Rotating)
+            //{
+            //    FindNewNeighbours();
+            //}
 
-            if (MapState.GameStateInfo == GameState.Filled)
-            {
-                CheckMatchForMap();
-            }
+            //if (MapState.GameStateInfo == GameState.Filled)
+            //{
+            //    FindNewNeighbours();
+            //    CheckMatchForMap();
+            //}
         }
 
-        private void CheckMatchForMap()
+        public void CheckMatchForMap(bool onMove)
         {
+            _onMove = onMove;
             var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
             foreach (var hexagon in mapMatris)
             {
-
-
-                hexagon.InstantiatedNeighbourData.FindNeighbours();
-                CheckMatch(hexagon);
-                if (MapState.GameStateInfo == GameState.Explode)
+                if (hexagon.InstantiatedNeighbourData != null)
                 {
-                    break;
+
+                    hexagon.InstantiatedNeighbourData.FindNeighbours();
+                    CheckMatch(hexagon);
+                    if (MapState.GameStateInfo == GameState.Explode)
+                    {
+                        break;
+                    }
                 }
+
 
             }
         }
@@ -51,31 +69,47 @@ namespace HexagonDemo.Match
 
                 MapState.GameStateInfo = GameState.Explode;
                 StartCoroutine(DestroyNeighbourList(hexagon.InstantiatedNeighbourData.MatchList));
-                        //if (bombHexagon != null)
-                        //{
-                        //    bombTime--;
-                        //    bombHexagon.GetComponent<Hexagon.HexagonController>().SetBombText(bombTime.ToString());
-                        //}
-                        //int score = (_neighbourList.Count * scoreController.ScoreMult);
+                
+               
+                //int score = (_neighbourList.Count * scoreController.ScoreMult);
 
-                        //scoreController.Score += score;
-                        //scoreController.ScoreTextUpdate();
-                       
-                    
-                }
+                //scoreController.Score += score;
+                //scoreController.ScoreTextUpdate();
+
+
+            }
             
         }
 
         private IEnumerator DestroyNeighbourList(List<IHexagon> _neighbourList)
         {
-            ExplosionEffect(_neighbourList);
-            _inputData.ClearLastSelection();
-            yield return new WaitForSeconds(.2f);
+            
+            if ( !_mapController.CheckMapIsEmpty() && _onMove)
+            {
+               
+                
+                _inputData.ClearLastSelection();
+                _scoreController.ScoreTextUpdate(_neighbourList.Count);
+                if (_mapController.BombHexagon != null)
+                {
+                    _mapController.BombHexagon.BombTime--;
+                    _mapController.BombHexagon.BombText.text = _mapController.BombHexagon.BombTime.ToString();
+                    if (_mapController.BombHexagon.BombTime <= 0)
+                    {
+                        _mapController.End();
+                    }
+                }
+            }
             foreach (var item in _neighbourList)
             {
-
+               
                 Destroy(item.SelfGameObject);
             }
+            ExplosionEffect(_neighbourList);
+            _mapController.CheckMapIsEmpty();
+            yield return new WaitForSeconds(.5f);
+           
+            
         }
 
         private void ExplosionEffect(List<IHexagon> _neighbourList)
@@ -92,7 +126,7 @@ namespace HexagonDemo.Match
             _explosionEffect.Play();
         }
 
-        void FindNewNeighbours()
+        public void FindNewNeighbours()
         {
             var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 

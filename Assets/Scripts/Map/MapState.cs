@@ -12,7 +12,8 @@ namespace HexagonDemo
         Rotating,
         Explode,
         Rotated,
-        Match
+        Match,
+        GameOver
     }
     public static class MapState
     {
