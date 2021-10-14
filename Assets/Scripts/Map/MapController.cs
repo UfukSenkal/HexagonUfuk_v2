@@ -304,9 +304,14 @@ namespace HexagonDemo.Map
 
 
 
+                 var denem = _neighbourList.Find(x => x.HexagonColor != differentObj.HexagonColor);
+                Color sameColor = Color.white;
+                if (denem != null)
+                {
+                     sameColor = _neighbourList.Find(x => x.HexagonColor != differentObj.HexagonColor).HexagonColor;
 
-           
-            Color sameColor = _neighbourList.Find(x => x.HexagonColor != differentObj.HexagonColor).HexagonColor;
+                }
+               
 
 
             List<IHexagon> sameObjects = new List<IHexagon>(_neighbourList);

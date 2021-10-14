@@ -94,7 +94,7 @@ namespace HexagonDemo.Match
                 {
                     _mapController.BombHexagon.BombTime--;
                     _mapController.BombHexagon.BombText.text = _mapController.BombHexagon.BombTime.ToString();
-                    if (_mapController.BombHexagon.BombTime <= 0)
+                    if (_mapController.BombHexagon.BombTime <= 0 && _mapController.BombHexagon.SelfGameObject != null)
                     {
                         _mapController.End();
                     }

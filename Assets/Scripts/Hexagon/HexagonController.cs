@@ -62,6 +62,14 @@ namespace HexagonDemo.Hexagon
                     _instantiatedHexagonData.IsMoving = false;
                 }
             }
+            if (_instantiatedHexagonData.IsBomb)
+            {
+                if (_instantiatedHexagonData.BombTime <= 0)
+                {
+                    MapState.GameStateInfo = GameState.GameOver;
+                }
+                
+            }
 
             
         }
