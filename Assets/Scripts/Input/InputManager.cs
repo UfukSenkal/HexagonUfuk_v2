@@ -12,7 +12,7 @@ namespace HexagonDemo.InputData
         {
             if (MapState.GameStateInfo == GameState.Filled)
             {
-
+#if UNITY_EDITOR
                 if (Input.GetMouseButtonDown(0))
                 {
                     _inputData.Click();
@@ -24,6 +24,9 @@ namespace HexagonDemo.InputData
                     MapState.GameStateInfo = GameState.Rotating;
                 
                 }
+#else
+                  _inputData.Swipe();
+#endif
             }
          
         }
