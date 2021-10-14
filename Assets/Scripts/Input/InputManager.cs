@@ -10,15 +10,20 @@ namespace HexagonDemo.InputData
         [SerializeField] InputData _inputData;
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) && MapState.GameStateInfo == GameState.Filled)
+            if (MapState.GameStateInfo == GameState.Filled)
             {
-                _inputData.Click();
-            }
-            if (Input.GetMouseButtonDown(1))
-            {
-                _inputData.RotateHexagons();
-                MapState.GameStateInfo = GameState.Rotating;
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _inputData.Click();
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _inputData.RotateHexagons();
+
+                    MapState.GameStateInfo = GameState.Rotating;
                 
+                }
             }
          
         }

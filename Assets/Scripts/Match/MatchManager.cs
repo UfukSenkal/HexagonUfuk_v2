@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HexagonDemo.Hexagon;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,11 @@ namespace HexagonDemo.Match
 
             if (MapState.GameStateInfo == GameState.Filled)
             {
-                CheckMatch();
+                CheckMatchForMap();
             }
         }
 
-        private void CheckMatch()
+        private void CheckMatchForMap()
         {
             var mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
@@ -31,40 +32,44 @@ namespace HexagonDemo.Match
 
 
                 hexagon.InstantiatedNeighbourData.FindNeighbours();
-                foreach (var _neighbourList in hexagon.InstantiatedNeighbourData.SelectableHexagonList)
-                {
-                    if (_neighbourList.Count >= 3)
-                    {
-
-                        if (_neighbourList.FindAll(p => p.HexagonColor == _neighbourList[0].HexagonColor).Count == _neighbourList.Count)
-                        {
-                            MapState.GameStateInfo = GameState.Explode;
-                            StartCoroutine(DestroyNeighbourList(mapMatris, _neighbourList));
-                            //if (bombHexagon != null)
-                            //{
-                            //    bombTime--;
-                            //    bombHexagon.GetComponent<Hexagon.HexagonController>().SetBombText(bombTime.ToString());
-                            //}
-                            //int score = (_neighbourList.Count * scoreController.ScoreMult);
-
-                            //scoreController.Score += score;
-                            //scoreController.ScoreTextUpdate();
-                            break;
-                        }
-                    }
-                }
+                CheckMatch(hexagon);
                 if (MapState.GameStateInfo == GameState.Explode)
                 {
                     break;
                 }
-                
+
             }
         }
 
-        private IEnumerator DestroyNeighbourList(Hexagon.HexagonController[,] mapMatris, List<Hexagon.IHexagon> _neighbourList)
+        private void CheckMatch(HexagonController hexagon)
+        {
+            
+                if (hexagon.InstantiatedNeighbourData.MatchList.Count >= 3)
+                {
+
+                    
+                       
+                        StartCoroutine(DestroyNeighbourList(hexagon.InstantiatedNeighbourData.MatchList));
+                        //if (bombHexagon != null)
+                        //{
+                        //    bombTime--;
+                        //    bombHexagon.GetComponent<Hexagon.HexagonController>().SetBombText(bombTime.ToString());
+                        //}
+                        //int score = (_neighbourList.Count * scoreController.ScoreMult);
+
+                        //scoreController.Score += score;
+                        //scoreController.ScoreTextUpdate();
+                       
+                    
+                }
+            
+        }
+
+        private IEnumerator DestroyNeighbourList(List<Hexagon.IHexagon> _neighbourList)
         {
                 _inputData.ClearLastSelection();
             yield return new WaitForSeconds(.3f);
+            MapState.GameStateInfo = GameState.Explode;
             foreach (var item in _neighbourList)
             {
                 //mapMatris[item.X, item.Y] = null;

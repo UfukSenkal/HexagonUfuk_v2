@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HexagonDemo.Hexagon
@@ -47,22 +48,26 @@ namespace HexagonDemo.Hexagon
         public void RotateHexagons(List<IHexagon> selectedGroup)
         {
             _selectedGroup = new List<IHexagon>(selectedGroup);
+            
             StartCoroutine(RotateHexagonsOppositeClockWise(selectedGroup));
+
         }
 
         public IEnumerator RotateHexagonsClockWise(List<IHexagon> selectedGroup)
         {
-            
+            selectedGroup.OrderBy(p => p.X);
             for (int i = 0; i < 3; i++)
             {
-
-                if (MapState.GameStateInfo == GameState.Explode)
+               
+                if (MapState.GameStateInfo == GameState.Match)
                 {
                     break;
                 }
                 _targetRotation = Quaternion.Euler(0, 0, 120 * (i + 1));
                 _isRotating = true;
-                yield return new WaitForSeconds(rotateSpeed);
+                yield return new WaitForSeconds(rotateSpeed * Time.deltaTime);
+
+
                 if (i == 0)
                 {
 
@@ -88,7 +93,7 @@ namespace HexagonDemo.Hexagon
                 
             }
 
-            MapState.GameStateInfo = GameState.Moving;
+            
 
 
         }
@@ -122,7 +127,7 @@ namespace HexagonDemo.Hexagon
                 yield return new WaitForSeconds(rotationSpeed);
             }
 
-            MapState.GameStateInfo = GameState.Moving;
+            
 
 
 

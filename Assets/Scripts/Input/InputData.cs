@@ -1,6 +1,7 @@
 ﻿using HexagonDemo.Hexagon;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HexagonDemo.InputData
@@ -21,9 +22,10 @@ namespace HexagonDemo.InputData
             {
                 ClearLastSelection();
                 SelectNeighbours(mousePos, neighbour);
-
+                
                 
             }
+
         }
 
         private void SelectNeighbours(Vector2 mousePos, HexagonController neighbour)
@@ -36,6 +38,16 @@ namespace HexagonDemo.InputData
                 
 
             }
+
+
+            for (int i = 0; i < _lastSelectionList.Count; i++)
+            {
+                Debug.Log(i + " : " + _lastSelectionList[i].SelfGameObject.name);
+            }
+
+           
+         
+            
             FindCenter();
             
         }
@@ -61,6 +73,7 @@ namespace HexagonDemo.InputData
             //_instantiatedCenterObj.transform.Rotate(0, 0, 120f, Space.Self);
             //Debug.Log(_instantiatedCenterObj.transform.eulerAngles);
             _instantiatedCenterObj.GetComponent<HexagonRotationController>().RotateHexagons(_lastSelectionList);
+            
         }
 
         private Vector2 FindCenter()
