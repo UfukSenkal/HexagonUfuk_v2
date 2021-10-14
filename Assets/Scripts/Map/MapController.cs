@@ -29,6 +29,7 @@ namespace HexagonDemo.Map
 
         private void Start()
         {
+            _bombScore = _mapSettings.BombScore;
             StartCoroutine(InstantiateInBegining());
         }
 
@@ -158,16 +159,19 @@ namespace HexagonDemo.Map
 
                         tempj = _mapSettings.GridHeight - 1;
                         ScriptableSpawnManager.Instance.InstantiateHexagon(i, _mapSettings.GridHeight - 1);
-
+                        
                         
                         yield return new WaitForSeconds(.2f);
-                        if (_scoreController.Score >= 10 && !CheckBombHexagon())
+                        if (_scoreController.Score >= _bombScore && !CheckBombHexagon())
                         {
+
                             _bombScore += _mapSettings.BombScore;
                             mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.BombText.text = _mapSettings.BombTime.ToString();
                             mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.BombText.gameObject.SetActive(true);
                             mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.IsBomb = true;
-                            
+                            _bombHexagon = mapMatris[i, _mapSettings.GridHeight - 1].GetComponent<HexagonController>().InstantiatedHexagonData;
+
+
                         }
                         mapMatris[i, _mapSettings.GridHeight - 1].InstantiatedHexagonData.CalculatePosition(i, _mapSettings.GridHeight - 1);
 
@@ -210,7 +214,7 @@ namespace HexagonDemo.Map
             }
             if (CheckMapIsEmpty())
             {
-                MoveHexagonsDown();
+                StartCoroutine(MoveHexagonsDown());
 
                 
             }
@@ -218,8 +222,15 @@ namespace HexagonDemo.Map
             {
                 yield return null;
             }
-
-            MatchManager.Instance.CheckMatchForMap(false);
+            
+            if (CheckGameOver())
+            {
+                _gameOverPanel.SetActive(true);
+            }
+            else
+            {
+                MatchManager.Instance.CheckMatchForMap(false);
+            }
         }
 
       public bool CheckBombHexagon()
@@ -279,6 +290,10 @@ namespace HexagonDemo.Map
 
         public bool CheckNeighbourForMatch(List<IHexagon> _neighbourList)
         {
+            if (!_neighbourList.Contains(null))
+            {
+
+            
             IHexagon differentObj = _neighbourList[0];
             if (_neighbourList[0].HexagonColor == _neighbourList[1].HexagonColor)
                 differentObj = _neighbourList[2];
@@ -290,7 +305,7 @@ namespace HexagonDemo.Map
 
 
 
-
+           
             Color sameColor = _neighbourList.Find(x => x.HexagonColor != differentObj.HexagonColor).HexagonColor;
 
 
@@ -314,6 +329,7 @@ namespace HexagonDemo.Map
                         return true;
                     }
                 }
+            }
             }
             return false;
 

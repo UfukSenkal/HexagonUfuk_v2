@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de089af2822e87c46abea2d6e89b5931, type: 3}
   m_Name: MapSettings
   m_EditorClassIdentifier: 
-  _gridWidth: 6
-  _gridHeight: 7
+  _gridWidth: 4
+  _gridHeight: 5
   _bombTime: 7
-  _colorCount: 5
+  _colorCount: 7
   _colors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.99149597, b: 0, a: 1}
   - {r: 0, g: 0.88191414, b: 1, a: 1}
   - {r: 0.6930852, g: 0, b: 1, a: 1}
   - {r: 0.091415405, g: 1, b: 0, a: 1}
+  - {r: 0.9245283, g: 0.25729796, b: 0.63843894, a: 1}
+  - {r: 0.105558395, g: 0, b: 1, a: 1}

@@ -45,7 +45,7 @@ namespace HexagonDemo.Map
         public int GridHeightMax { get => _gridHeightMax;  }
         public int GridHeightMin { get => _gridHeightMin;  }
         public int BombTimeMax { get => _bombTimeMax;  }
-        public int BombTimeMin { get => _bombTimeMin; set => _bombTimeMin = value; }
+        public int BombTimeMin { get => _bombTimeMin;  }
         public float GridYOffset { get => _gridYOffset; }
         public float GridXOffset { get => _gridXOffset; }
         public int BombScore { get => _bombScore; }

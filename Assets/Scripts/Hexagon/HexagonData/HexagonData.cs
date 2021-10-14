@@ -78,7 +78,7 @@ namespace HexagonDemo.Hexagon
         {
             var _mapMatris = ScriptableSpawnManager.Instance.MapMatris;
 
-            Color goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
+            Color goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.ColorCount)];
             if (!ScriptableSpawnManager.Instance.IsInstantiedAll)
             {
                 if (i > 0)
@@ -88,7 +88,7 @@ namespace HexagonDemo.Hexagon
                     {
                         while (_mapMatris[i - 1, j].SpriteRenderer.color == goColor)
                         {
-                            goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
+                            goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.ColorCount)];
                         }
                     }
                     else
@@ -98,7 +98,7 @@ namespace HexagonDemo.Hexagon
 
                             while (_mapMatris[i - 1, j - 1].SpriteRenderer.color == goColor)
                             {
-                                goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.Colors.Length)];
+                                goColor = _mapSettings.Colors[Random.Range(0, _mapSettings.ColorCount)];
                             }
                         }
                     }

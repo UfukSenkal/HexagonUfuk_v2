@@ -18,7 +18,7 @@ namespace HexagonDemo
 
         public bool IsInstantiedAll = false;
 
-     
+
         public override void Initialize()
         {
             base.Initialize();
@@ -41,6 +41,7 @@ namespace HexagonDemo
                 IsInstantiedAll = (x == _mapSettings.GridWidth - 1 ? true : false) && (y == _mapSettings.GridHeight - 1 ? true : false);
             }
 
+            
             return hexagon;
         }
 

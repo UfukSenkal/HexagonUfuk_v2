@@ -63,7 +63,9 @@ namespace HexagonDemo.Hexagon {
 
             if (x != (_hexagonController.InstantiatedHexagonData.MapSettings.GridWidth - 1) && (isUpperHeight ?  y != (_hexagonController.InstantiatedHexagonData.MapSettings.GridHeight - 1) : true))
             {
-                _neighbourHexagonUpRight = mapMatris[x + 1, isUpperHeight ? y + 1 : y].InstantiatedHexagonData;
+               
+                    _neighbourHexagonUpRight = mapMatris[x + 1, isUpperHeight ? y + 1 : y].InstantiatedHexagonData;
+                
 
             }
 
