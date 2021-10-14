@@ -89,7 +89,7 @@ namespace HexagonDemo.Match
                
                 
                 _inputData.ClearLastSelection();
-                _scoreController.ScoreTextUpdate(_neighbourList.Count);
+                
                 if (_mapController.BombHexagon != null)
                 {
                     _mapController.BombHexagon.BombTime--;
@@ -102,9 +102,10 @@ namespace HexagonDemo.Match
             }
             foreach (var item in _neighbourList)
             {
-               
+                Destroy(item.SelfGameObject.GetComponent<HexagonController>().InstantiatedNeighbourData);
                 Destroy(item.SelfGameObject);
             }
+            _scoreController.ScoreTextUpdate(_neighbourList.Count);
             ExplosionEffect(_neighbourList);
             _mapController.CheckMapIsEmpty();
             yield return new WaitForSeconds(.5f);
