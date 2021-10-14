@@ -47,9 +47,9 @@ namespace HexagonDemo.Match
                 if (hexagon.InstantiatedNeighbourData.MatchList.Count >= 3)
                 {
 
-                    
-                       
-                        StartCoroutine(DestroyNeighbourList(hexagon.InstantiatedNeighbourData.MatchList));
+
+                MapState.GameStateInfo = GameState.Explode;
+                StartCoroutine(DestroyNeighbourList(hexagon.InstantiatedNeighbourData.MatchList));
                         //if (bombHexagon != null)
                         //{
                         //    bombTime--;
@@ -69,7 +69,7 @@ namespace HexagonDemo.Match
         {
                 _inputData.ClearLastSelection();
             yield return new WaitForSeconds(.3f);
-            MapState.GameStateInfo = GameState.Explode;
+           
             foreach (var item in _neighbourList)
             {
                 //mapMatris[item.X, item.Y] = null;
