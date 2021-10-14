@@ -229,6 +229,7 @@ MonoBehaviour:
   _mapSettings: {fileID: 11400000, guid: 21634e92363df9c459a8441cae4c5dd2, type: 2}
   _scoreController: {fileID: 2093345075}
   _matchManager: {fileID: 848705879}
+  _gameOverPanel: {fileID: 579191853}
   currentGameState: 1
 --- !u!4 &235534697
 Transform:
